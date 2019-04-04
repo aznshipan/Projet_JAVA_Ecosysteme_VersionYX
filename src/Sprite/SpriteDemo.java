@@ -69,6 +69,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	private Image ApplePourri;
 	private Image[] Chasseur;
 	private Image TombeRIP;
+	private Image reliefgauche;
+	private Image reliefdroit;
+	private Image reliefbas;
+	private Image reliefhaut;
 	
 	private Image Flamme;
 	private Image rochevolcan;
@@ -93,6 +97,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	{
 		try
 		{
+			reliefhaut = ImageIO.read(new File("reliefhaut.png"));
+			reliefbas = ImageIO.read(new File("reliefbas.png"));
+			reliefdroit = ImageIO.read(new File("reliefdroit.png"));
+			reliefgauche = ImageIO.read(new File("reliefgauche.png"));
 			TombeRIP = ImageIO.read(new File("tete-de-mort.png"));
 			waterSprite = ImageIO.read(new File("water.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
@@ -103,10 +111,6 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 			tSpriteA = ImageIO.read(new File("test1A.png"));
 			arbrecrame = ImageIO.read(new File("test1crame.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
-			PokemonFeu = ImageIO.read(new File("hericendre.png"));
-			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
-			PokemonEau = ImageIO.read(new File("carapuce.png"));
-			PokemonEauEvolue = ImageIO.read(new File("CarabaffeTrans.png")); 
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
 			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
@@ -193,10 +197,22 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 							arbreEnCroissance = false;
 							g2.drawImage(grassSpriteH,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 						}
-					if (Terrain.getTerrain()[j][i][1] >= (Terrain.getTerre() - 2) && Terrain.getTerrain()[j][i][1] <= (Terrain.getTerre()+2))
+					if (Terrain.getTerrain()[j][i][1] >= (Terrain.getTerre() - 2) && Terrain.getTerrain()[j][i][1] <= (Terrain.getTerre()+2)) {
 						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-					if (Terrain.getTerrain()[j][i][1] < Terrain.getEau())
+					}
+					if (Terrain.getTerrain()[j][i][1] < Terrain.getEau()) {
 						g2.drawImage(waterSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					}
+//					if(Terrain.getTerrain()[j][i][1] >= Terrain.getEau() && Terrain.getTerrain()[j][i][1] < Terrain.contourRoche()) {
+//						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0] < Terrain.getTerrain()[j][i][0]) {
+//							g2.drawImage(reliefbas,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+//						}else {
+//							if(Terrain.getTerrain()[(j+1+dy)%dy][i][0] > Terrain.getTerrain()[j][i][0]) {
+//								g2.drawImage(reliefhaut,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+//							}
+//						}
+//					}
+					
 					for (int a=0;a<Monde.getcarte_Ab().size();a++) {
 						if (Monde.getcarte_Ab().get(a).getX()==i && Monde.getcarte_Ab().get(a).getY()==j) {
 							if (Monde.getcarte_Ab().get(a).isEnfeu()) {
