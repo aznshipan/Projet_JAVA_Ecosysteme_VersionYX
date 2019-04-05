@@ -61,30 +61,31 @@ public class Monde {
 			}
 	}
 	
-	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte_A
-			int x1,y1;
-			boolean bool_A;
-			do {
-				bool_A=false;
-				x1= (int) (Math.random()*Monde.getDx());
-				y1 =(int) (Math.random()*Monde.getDy());
-				if(Terrain.getTerrain()[y1][x1][1] < Terrain.getEau()) {
+	public void pomme_pop() { //fait apparaitre des pomme sur la carte_A
+		int x1,y1;
+		boolean bool_A;
+		do {
+			bool_A=false;
+			x1= (int) (Math.random()*Monde.getDx());
+			y1 =(int) (Math.random()*Monde.getDy());
+			if(Terrain.getTerrain()[y1][x1][1] < Terrain.getEau()) {
+				bool_A=true;
+				break;
+			}
+			for (int i=0;i<Monde.getcarte_Ab().size();i++) {
+				if (Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1) {
 					bool_A=true;
 					break;
 				}
-				for (int i=0;i<Monde.getcarte_Ab().size();i++) {
-					if (Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1) {
-						bool_A=true;
-						break;
-					}
-				}
-			}while(bool_A);
-			if(Terrain.getTerrain()[y1][x1][1] >= Terrain.getEau() && Terrain.getTerrain()[y1][x1][1] < Terrain.contourRoche()) {
-				Pomme apple = new Pomme(x1, y1);
-				carte_P.add(apple);
-			}else {
-				pomme_pop(cpt);
 			}
+		}while(bool_A);
+		if(Terrain.getTerrain()[y1][x1][1] >= Terrain.getEau() && Terrain.getTerrain()[y1][x1][1] < Terrain.contourRoche()) {
+			System.out.println("Une pomme est apparue");
+			Pomme apple = new Pomme(x1, y1);
+			carte_P.add(apple);
+		}else {
+			pomme_pop();
+		}
 	}
 	public void tree_pop(boolean printemps) { //fait apparaitre des arbres sur la carte
 		if(printemps){

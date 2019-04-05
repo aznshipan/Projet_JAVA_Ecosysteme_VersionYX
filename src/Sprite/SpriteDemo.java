@@ -246,7 +246,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 								}
 							}
 						}
-												}
+					}
+					
 					if (Terrain.getTerrain()[j][i][0] >= Terrain.contourRoche() && Terrain.getTerrain()[j][i][0] < Terrain.sommetVolcan()) {
 						if(Terrain.getTerrain()[j][i][0] < (Terrain.sommetVolcan()-7)) {
 							if(Terrain.getTerrain()[j][i][0] == Terrain.contourRoche()) {
@@ -494,10 +495,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 									g2.drawImage(ChasseurSurEau[1],spriteLength*(i-a1)-(spriteLength/5) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 								}
 								if ( braconnier.getSens() == 2 ) { //va en bas
-									g2.drawImage(ChasseurSurEau[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+									g2.drawImage(ChasseurSurEau[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 								}
 								if ( braconnier.getSens() == 3 ) { //va en haut
-									g2.drawImage(ChasseurSurEau[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+									g2.drawImage(ChasseurSurEau[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 								}
 								if ( braconnier.getSens() == 4 ) { //reste sur place
 									g2.drawImage(ChasseurSurEau[0],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
@@ -631,8 +632,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
     } 
 	
 	public static void main(String[] args) {
-		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,0.01,0.1);
+		Terrain terrain= new Terrain(dx=50,dy=50);
+		Monde monde = new Monde(dx,dy,0.1,0.1);
 		SpriteDemo a =new SpriteDemo();
         a.addKeyListener(a);
         a.addMouseWheelListener(a);
@@ -659,14 +660,14 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 					terrain.evaporeLave(terrain.getPluie());
 				}
 				//monde.tree_pop(arbreEnCroissance);
-				monde.pomme_pop(step);
+				monde.pomme_pop();
 				Pomme.duree();
 				Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
 				Monde.grandir();
-			//	M.reproduction();
+				M.reproduction();
 				terrain.evaporeEau((jour%12 >=3 && jour%12<6) && (terrain.getPluie() == false));
 				terrain.MonteEau(terrain.getPluie());
 				terrain.herbePoussant();
