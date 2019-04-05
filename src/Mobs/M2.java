@@ -10,8 +10,6 @@ public class M2 extends M{
 	public M2(int x, int y) {
 		super(x, y);
 		atk=(int) (Math.random()*100);
-		pv=500;
-		S="0";
 	}
 
 	public String getS() {
@@ -19,6 +17,10 @@ public class M2 extends M{
 	}
 	
 	public void move(int dx, int dy) {
+//		pv --;
+//		if(pv == 0) {
+//			this.setMort(true);
+//		}
 		if(!this.getMort()) {
 			if (this.sens == 0) {
 				this.x=(this.x-1+dx)%dx;
@@ -48,10 +50,14 @@ public class M2 extends M{
 	public void manger_pomme(Pomme apple) {
 		for(int i = 0; i < Monde.getcarte_P().size(); i++) {
 				if(Monde.getcarte_P().get(i).equals(apple)){
-					if (apple.isEstPourrie()) 
+					if (apple.isEstPourrie()) {
 						nb_pomme_manger += 1 ;
-					else 
+						pv += 5;
+					}
+					else {
 						nb_pomme_manger += 2 ;
+						pv += 10;
+					}
 					Monde.getcarte_P().remove(i);
 					evoluer();
 					return ;

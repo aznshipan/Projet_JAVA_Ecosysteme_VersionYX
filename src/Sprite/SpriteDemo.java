@@ -68,11 +68,13 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	private Image Apple;
 	private Image ApplePourri;
 	private Image[] Chasseur;
+	private Image[] ChasseurSurEau;
 	private Image TombeRIP;
 	private Image reliefgauche;
 	private Image reliefdroit;
 	private Image reliefbas;
 	private Image reliefhaut;
+	private Image smoke;
 	
 	private Image Flamme;
 	private Image rochevolcan;
@@ -86,7 +88,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	private Image pluieF;
 	private Image nuitF;
 	private Image soleilF;
-	private int jour;
+	private static int jour;
 	private long time_init;
 	private long laps;
 	private boolean duree;
@@ -97,6 +99,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	{
 		try
 		{
+			smoke = Toolkit.getDefaultToolkit().createImage("smoke.gif");
 			reliefhaut = ImageIO.read(new File("reliefhaut.png"));
 			reliefbas = ImageIO.read(new File("reliefbas.png"));
 			reliefdroit = ImageIO.read(new File("reliefdroit.png"));
@@ -128,6 +131,12 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 			Chasseur[1] = Toolkit.getDefaultToolkit().createImage("character_walkright.gif");
 			Chasseur[2] = Toolkit.getDefaultToolkit().createImage("character_walkup.gif");
 			Chasseur[3] = Toolkit.getDefaultToolkit().createImage("character_walkdown.gif");
+			
+			ChasseurSurEau = new Image[4]; //Chasseur sur eau
+			ChasseurSurEau[0] = ImageIO.read(new File("chasseursureaugauche.png"));
+			ChasseurSurEau[1] = ImageIO.read(new File("chasseursureaudroite.png"));
+			ChasseurSurEau[2] = ImageIO.read(new File("chasseursureaubas.png"));
+			ChasseurSurEau[3] = ImageIO.read(new File("chasseursureauhaut.png"));
 			
 			PokemonFeuMove = new Image[4]; // Hericendre 
 			PokemonFeuMove[0] = Toolkit.getDefaultToolkit().createImage("Hericendrewalkleft.gif"); //Va a gauche
@@ -203,15 +212,20 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 					if (Terrain.getTerrain()[j][i][1] < Terrain.getEau()) {
 						g2.drawImage(waterSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					}
-//					if(Terrain.getTerrain()[j][i][1] >= Terrain.getEau() && Terrain.getTerrain()[j][i][1] < Terrain.contourRoche()) {
-//						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0] < Terrain.getTerrain()[j][i][0]) {
-//							g2.drawImage(reliefbas,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-//						}else {
-//							if(Terrain.getTerrain()[(j+1+dy)%dy][i][0] > Terrain.getTerrain()[j][i][0]) {
-//								g2.drawImage(reliefhaut,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-//							}
-//						}
-//					}
+					if(Terrain.getTerrain()[j][i][1] >= Terrain.getEau() && Terrain.getTerrain()[j][i][1] < Terrain.contourRoche()) {
+						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0]/20 < Terrain.getTerrain()[j][i][0]/20) {
+							g2.drawImage(reliefhaut,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						}
+						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0]/20 > Terrain.getTerrain()[j][i][0]/20) {
+							g2.drawImage(reliefbas,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						}
+						if(Terrain.getTerrain()[j][(i+1+dx)%dx][0]/20 < Terrain.getTerrain()[j][i][0]/20) {
+							g2.drawImage(reliefgauche,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						}
+						if(Terrain.getTerrain()[j][(i+1+dx)%dx][0]/20 > Terrain.getTerrain()[j][i][0]/20) {
+							g2.drawImage(reliefdroit,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						}
+					}
 					
 					for (int a=0;a<Monde.getcarte_Ab().size();a++) {
 						if (Monde.getcarte_Ab().get(a).getX()==i && Monde.getcarte_Ab().get(a).getY()==j) {
@@ -264,7 +278,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[j][i][0] >= (Terrain.contourRoche() + 3) && Terrain.getTerrain()[j][i][0] < (Terrain.sommetVolcan() - 2)) {
+					if(Terrain.getTerrain()[j][i][0] >= (Terrain.contourRoche()) && Terrain.getTerrain()[j][i][0] < (Terrain.sommetVolcan())) {
 						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
@@ -274,7 +288,17 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[j][i][0] >= (Terrain.contourRoche() + 7) && Terrain.getTerrain()[j][i][0] <= (Terrain.sommetVolcan() - 1)) {
+					if(Terrain.getTerrain()[j][i][0] >= (Terrain.contourRoche() + 3) && Terrain.getTerrain()[j][i][0] < (Terrain.sommetVolcan())) {
+						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[j][i][0] >= (Terrain.contourRoche() + 5) && Terrain.getTerrain()[j][i][0] <= (Terrain.sommetVolcan())) {
 						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
@@ -285,7 +309,22 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
 					if(Terrain.getTerrain()[j][i][1] == Terrain.SolLave()) {
-						g2.drawImage(Lave,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+						g2.drawImage(Lave,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[j][i][1] == Terrain.SolLave()) {
+						if(Terrain.getPluie() && ((Terrain.getTerrain()[(i+1+dy)%dy][j][1]!=Terrain.SolLave()) 
+								|| Terrain.getTerrain()[(i-1+dy)%dy][j][1]!=Terrain.SolLave() 
+								|| Terrain.getTerrain()[i][(j+1+dx)%dx][1]!=Terrain.SolLave()
+								|| Terrain.getTerrain()[i][(j-1+dx)%dx][1]!=Terrain.SolLave())){
+							g2.drawImage(smoke,spriteLength*(i-a1)-17,spriteLength*(j-a2)-50,spriteLength+35,spriteLength+50, frame);
+						}
 					}
 					
 				}catch(Exception e) {}
@@ -422,7 +461,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 						try {
 						if (array_m.get(m) instanceof Braconnier && ((Braconnier)array_m.get(m)).getX()==i && ((Braconnier)array_m.get(m)).getY()==j) {
 							Braconnier braconnier = (Braconnier)(array_m.get(m));
-							
+							if(Terrain.getTerrain()[braconnier.getY()][braconnier.getX()][1] >= Terrain.getEau()) {
 							if ( braconnier.getSens() == 0 ) { //va a gauche
 								g2.drawImage(Chasseur[0],spriteLength*(i-a1)-(spriteLength/5) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 							}
@@ -446,6 +485,32 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 							}
 							if ( braconnier.getSens() == 7 ) { //reste sur place
 								g2.drawImage(Chasseur[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5),spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+							}
+							}else {
+								if ( braconnier.getSens() == 0 ) { //va a gauche
+									g2.drawImage(ChasseurSurEau[0],spriteLength*(i-a1)-(spriteLength/5) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 1 ) { //va a droite
+									g2.drawImage(ChasseurSurEau[1],spriteLength*(i-a1)-(spriteLength/5) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 2 ) { //va en bas
+									g2.drawImage(ChasseurSurEau[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 3 ) { //va en haut
+									g2.drawImage(ChasseurSurEau[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 4 ) { //reste sur place
+									g2.drawImage(ChasseurSurEau[0],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 5 ) { //reste sur place
+									g2.drawImage(ChasseurSurEau[1],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 6 ) { //reste sur place
+									g2.drawImage(ChasseurSurEau[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5),spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
+								if ( braconnier.getSens() == 7 ) { //reste sur place
+									g2.drawImage(ChasseurSurEau[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5),spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+								}
 							}
 							continue;
 						}}catch(Exception e) {}
@@ -567,7 +632,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	
 	public static void main(String[] args) {
 		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,0.01,0.05);
+		Monde monde = new Monde(dx,dy,0.01,0.1);
 		SpriteDemo a =new SpriteDemo();
         a.addKeyListener(a);
         a.addMouseWheelListener(a);
@@ -602,6 +667,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 				marcher = 0;
 				Monde.grandir();
 			//	M.reproduction();
+				terrain.evaporeEau((jour%12 >=3 && jour%12<6) && (terrain.getPluie() == false));
 				terrain.MonteEau(terrain.getPluie());
 				terrain.herbePoussant();
 				if(cycle_volcan % 100 == 0) {

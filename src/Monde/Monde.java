@@ -59,41 +59,9 @@ public class Monde {
 					}
 				}
 			}
-		/*for (int i=0;i<nb_Ag;i++) {
-			double p1 =  Math.random();
-			if (p1 <= 0.99) {
-				int x1= (int) (Math.random()*dx);
-				int y1 =(int) (Math.random()*dy);
-				if(Terrain.getTerrain()[x1][y1][1] > 10 && Terrain.getTerrain()[x1][y1][2] == 0) {
-					M1 monstre = new M1(x1, y1);
-					carte_Ag.add(monstre);
-				}
-				else {
-					i--;
-				}
-			}else {
-				int x1= (int) (Math.random()*dx);
-				int y1 =(int) (Math.random()*dy);
-				M2 monstre = new M2(x1, y1);
-				carte_Ag.add(monstre);
-			}
-		}*/
-		/*
-		carte_Ag.add(new M1(10,10));
-		carte_Ab.add(new Arbre(11,10));
-		carte_Ab.add(new Arbre(9,10));
-		carte_Ab.add(new Arbre(10,9));
-		carte_Ab.add(new Arbre(10,11));*/
-		/*for (int i=0;i<carte_Ag.size();i++) {
-			if (carte_Ag.get(i) instanceof M1)	
-				((M1) carte_Ag.get(i)).setSens();
-		}*/
-		//carte_Ag.add(new M1(6,6));
-		//carte_Ag.add(new M2(5,5));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte_A
-		if (cpt % 2 == 0) {
 			int x1,y1;
 			boolean bool_A;
 			do {
@@ -117,7 +85,6 @@ public class Monde {
 			}else {
 				pomme_pop(cpt);
 			}
-		}
 	}
 	public void tree_pop(boolean printemps) { //fait apparaitre des arbres sur la carte
 		if(printemps){
@@ -280,8 +247,6 @@ public class Monde {
 	}
 	
 	public void propagation_F() {
-		//System.out.println(""+carte_Ag_depart.toString());
-		//System.out.println(""+carte_Ag.toString());
 		
 		for (int i=0;i<carte_Ab.size();i++) {
 			if (((Arbre) carte_Ab.get(i)).isEnfeu()) {

@@ -28,10 +28,14 @@ public abstract class M {
 		nb_pomme_manger = 0;
 		evolution = false;
 		mort = false;
+		pv = 100;
 		
 	}
 	public void move(int dx, int dy) {
-		System.out.println("++++");
+		pv--;
+		if(pv == 0) {
+			setMort(true);
+		}
 		if(this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -56,10 +60,14 @@ public abstract class M {
 	public void manger_pomme(Pomme apple , ArrayList<Object> monde) {
 		for(int i = 0; i < monde.size(); i++) {
 				if(monde.get(i).equals(apple)){
-					if (apple.isEstPourrie()) 
+					if (apple.isEstPourrie()) {
 						nb_pomme_manger += 1 ;
-					else 
+						pv += 5;
+					}
+					else {
 						nb_pomme_manger += 2 ;
+						pv += 10;
+					}
 					monde.remove(i);
 					return ;
 			}

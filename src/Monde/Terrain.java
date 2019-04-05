@@ -135,6 +135,22 @@ public class Terrain {
 			}
 		}
 	}
+	public void evaporeEau(boolean ete) {
+		if(ete) {
+			for(int i = 0; i < dy ; i++) {
+				for(int j = 0; j < dx; j++) {
+					if((this.getTerrain()[i][j][1]<this.getEau()) && ((this.getTerrain()[(i+1+dy)%dy][j][1]>=this.getEau()) 
+							|| this.getTerrain()[(i-1+dy)%dy][j][1]>=this.getEau() 
+							|| this.getTerrain()[i][(j+1+dx)%dx][1]>=this.getEau() 
+							|| this.getTerrain()[i][(j-1+dx)%dx][1]>=this.getEau()) && (this.getTerrain()[i][j][0]>=this.getEau() - 10)) {
+						if(Math.random() < 0.05) {
+							this.getTerrain()[i][j][1]=grass(); 
+						}
+					}
+				}
+			}
+		}
+	}
 	public static boolean getPluie() {
 		return pluie;
 	}
@@ -145,7 +161,7 @@ public class Terrain {
 		return 207;
 	}
 	public static int getEau() {
-		return 205;
+		return 180;
 	}
 	public static int contourRoche() {
 		return 239;
