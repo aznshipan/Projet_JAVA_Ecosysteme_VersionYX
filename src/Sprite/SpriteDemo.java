@@ -213,10 +213,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 						g2.drawImage(waterSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					}
 					if(Terrain.getTerrain()[j][i][1] >= Terrain.getEau() && Terrain.getTerrain()[j][i][1] < Terrain.contourRoche()) {
-						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0]/20 < Terrain.getTerrain()[j][i][0]/20) {
+						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0]/20 > Terrain.getTerrain()[j][i][0]/20) {
 							g2.drawImage(reliefhaut,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 						}
-						if(Terrain.getTerrain()[(j+1+dy)%dy][i][0]/20 > Terrain.getTerrain()[j][i][0]/20) {
+						if(Terrain.getTerrain()[(j-1+dy)%dy][i][0]/20 > Terrain.getTerrain()[j][i][0]/20) {
 							g2.drawImage(reliefbas,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 						}
 						if(Terrain.getTerrain()[j][(i+1+dx)%dx][0]/20 < Terrain.getTerrain()[j][i][0]/20) {
@@ -632,8 +632,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
     } 
 	
 	public static void main(String[] args) {
-		Terrain terrain= new Terrain(dx=50,dy=50);
-		Monde monde = new Monde(dx,dy,0.1,0.1);
+		Terrain terrain= new Terrain(dx=100,dy=100);
+		Monde monde = new Monde(dx,dy,5,0.1,0.2);
 		SpriteDemo a =new SpriteDemo();
         a.addKeyListener(a);
         a.addMouseWheelListener(a);
@@ -659,7 +659,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 				}else {
 					terrain.evaporeLave(terrain.getPluie());
 				}
-				//monde.tree_pop(arbreEnCroissance);
+				monde.tree_pop(arbreEnCroissance);
+				monde.arbre_prend_feu();
 				monde.pomme_pop();
 				Pomme.duree();
 				Pomme.delete();
@@ -668,6 +669,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 				marcher = 0;
 				Monde.grandir();
 				M.reproduction();
+				monde.pop_Braconnier(step);
+				monde.partir_braconnier(step);
 				terrain.evaporeEau((jour%12 >=3 && jour%12<6) && (terrain.getPluie() == false));
 				terrain.MonteEau(terrain.getPluie());
 				terrain.herbePoussant();

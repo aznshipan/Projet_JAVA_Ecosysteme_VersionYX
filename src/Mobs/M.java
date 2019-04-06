@@ -112,35 +112,35 @@ public abstract class M {
 	public static void reproduction() {
 		ArrayList<Object> carte = Monde.getcarte_Ag();
 		int taille = carte.size();
-		System.out.println(""+taille);
+		if(taille > (Monde.getDx() * Monde.getDy()) / 20) {
+			return ;
+		}
 		for (int i=0; i<taille; i++) {
-			if (carte.get(i) instanceof M && ((M) carte.get(i)).getStep() >20) {
+			if (carte.get(i) instanceof M && ((M) carte.get(i)).getStep() >100) {
 				for (int j=0;j<taille ;j++) {
 					if (!(carte.get(j).equals(carte.get(i))) 
 							&& carte.get(j).getClass().equals(carte.get(i).getClass()) 
 							&& ((M) carte.get(j)).getStep() >20 
 							&& ((M)carte.get(j)).getX() == ((M)carte.get(i)).getX() 
 							&& ((M)carte.get(j)).getY() == ((M)carte.get(i)).getY() ) {
+						
 						if (carte.get(i) instanceof M1) {
 							((M1) carte.get(i)).step=0;
 							((M1) carte.get(j)).step=0;
-							if(taille <= 800) {
-								carte.add(new M1(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
-							}
+							carte.add(new M1(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
 							break ;
 						}
 						if (carte.get(i) instanceof M2) {
 							((M2) carte.get(i)).step=0;
 							((M2) carte.get(j)).step=0;
-							if(taille <= 800) {
-								carte.add(new M2(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
-							}
+							carte.add(new M2(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
 							break ;
 						}
 					}
 				}
 			}
 		}
+		
 	}
 	public void setMort(boolean mort) {
 		this.mort = mort;

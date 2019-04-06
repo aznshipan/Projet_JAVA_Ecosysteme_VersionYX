@@ -29,10 +29,19 @@ public class Monde {
 		return carte_P;
 	}
 
-	public Monde(int x, int y, double taux_agent,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
+	public Monde(int x, int y,int nb_Braconnier, double taux_agent,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;
-		carte_Ag.add(new Braconnier(10,10));
+		int cpt_Braconier=0;
+		while (cpt_Braconier<nb_Braconnier) {
+			int x1= (int) (Math.random()*dx);
+			int y1 =(int) (Math.random()*dy);
+			if(Terrain.getTerrain()[y1][x1][1] >= Terrain.getEau() && Terrain.getTerrain()[y1][x1][2]==0 && Terrain.getTerrain()[y1][x1][1] < Terrain.contourRoche()) {
+				Braconnier braconnier = new Braconnier(x1, y1);
+				carte_Ag.add(braconnier);
+				cpt_Braconier+=1;
+			}
+		}
 		for (int i=0;i<dy;i++) {
 			for(int j=0;j<dx;j++) {
 				if(Terrain.getTerrain()[i][j][1] >= Terrain.getEau() && Terrain.getTerrain()[i][j][1] < Terrain.contourRoche()) {
@@ -80,7 +89,6 @@ public class Monde {
 			}
 		}while(bool_A);
 		if(Terrain.getTerrain()[y1][x1][1] >= Terrain.getEau() && Terrain.getTerrain()[y1][x1][1] < Terrain.contourRoche()) {
-			System.out.println("Une pomme est apparue");
 			Pomme apple = new Pomme(x1, y1);
 			carte_P.add(apple);
 		}else {
@@ -110,6 +118,35 @@ public class Monde {
 								Arbre arbres = new Arbre(j, i);
 								carte_Ab.add(arbres);
 							}
+						}
+					}
+				}
+			}
+		}
+	}
+	public void pop_Braconnier(int step) {
+		if(step % 25 == 0) {
+			if(carte_Ag.size() > (dx*dy)/30) {
+				boolean bool_pop=true;
+				while(bool_pop) {
+					int x1= (int) (Math.random()*dx);
+					int y1 =(int) (Math.random()*dy);
+					if(Terrain.getTerrain()[y1][x1][1] >= Terrain.getEau() && Terrain.getTerrain()[y1][x1][2]==0 && Terrain.getTerrain()[y1][x1][1] < Terrain.contourRoche()) {
+						Braconnier braconnier = new Braconnier(x1, y1);
+						carte_Ag.add(braconnier);
+						bool_pop=false;
+					}
+				}
+			}
+		}
+	}
+	public void partir_braconnier(int step) {
+		if(step % 25 == 0) {
+			if(Monde.carte_Ag.size() <= (Monde.getDx()*Monde.getDy())/50) {
+				for(int i = 0; i < Monde.carte_Ag.size(); i++) {
+					if(Monde.carte_Ag.get(i) instanceof Braconnier) {
+						if(i < Monde.carte_Ag.size()) {
+							Monde.carte_Ag.remove(i);
 						}
 					}
 				}
@@ -201,6 +238,13 @@ public class Monde {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if (carte_Ag.get(i) instanceof M)
 				((M) carte_Ag.get(i)).setStep();
+		}
+	}
+	public void arbre_prend_feu() {
+		for(int i = 0; i < carte_Ab.size(); i++) {
+			if(Math.random() < 0.05) {
+				carte_Ab.get(i).setEnfeu(true);
+			}
 		}
 	}
 	
