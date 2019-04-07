@@ -65,32 +65,13 @@ public class M2 extends M{
 		}
 	}
 	public void setSens() {
-		int cpt=0;
-		int tab_A[] = new int[4];
-		for (int i=0;i<Monde.getcarte_Ab().size();i++) {
-			
-			if (Monde.getcarte_Ab().get(i).getX()==this.x-1 && Monde.getcarte_Ab().get(i).getY()==this.y) {
-				tab_A[0]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x+1 && Monde.getcarte_Ab().get(i).getY()==this.y) {
-				tab_A[1]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y+1) {
-				tab_A[2]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y-1) {
-				tab_A[3]=i;
-				cpt+=1;
-			}
-		}
-		if (cpt == 4) {
+		if ((Terrain.getTerrain()[(this.y-1+Monde.getDy())%Monde.getDy()][this.x][2] == 1) 
+				&& (Terrain.getTerrain()[(this.y+1+Monde.getDy())%Monde.getDy()][this.x][2] == 1)
+				&& (Terrain.getTerrain()[this.y][(this.x+1+Monde.getDx())%Monde.getDx()][2] == 1) 
+				&& (Terrain.getTerrain()[this.y][(this.x-1+Monde.getDx())%Monde.getDx()][2] == 1)) 
+		{
 			this.setMort(true);
-			System.out.println("R");
-			System.out.println(""+Monde.getcarte_Ag().size());
-			return ;
+			return;
 		}
 		
 		for(int m=  0; m < Monde.getcarte_P().size();m++) {

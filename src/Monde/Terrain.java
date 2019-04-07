@@ -34,8 +34,8 @@ public class Terrain {
 		terrain = new int[dy][dx][3];
 		int taille_y=((int) (Math.random()*(Math.max(0,image.getHeight()-dy))));
 		int taille_x=((int) (Math.random()*(Math.max(0,image.getHeight()-dx))));
-		taille_x=0;
-		taille_y=0;
+//		taille_x=0;
+//		taille_y=0;
 		for (int i=taille_y;i<taille_y+dy;i++) {
 			for (int j=taille_x;j<taille_x+dx;j++) {
 				Color c = new Color(image.getRGB(i, j));

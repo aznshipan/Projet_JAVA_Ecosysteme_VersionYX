@@ -633,14 +633,11 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 	
 	public static void main(String[] args) {
 		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,5,0.1,0.2);
+		Monde monde = new Monde(dx,dy,1,0.2,0.2);
 		SpriteDemo a =new SpriteDemo();
         a.addKeyListener(a);
         a.addMouseWheelListener(a);
         a.setFocusable(true);
-		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
-		//monde.detail();
-		//System.exit(123);
 		cpt_pas = 0;
 		marcher = 0;
 		step = 0;
@@ -667,6 +664,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseWheelListener
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
+				
 				Monde.grandir();
 				M.reproduction();
 				monde.pop_Braconnier(step);
